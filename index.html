@@ -1,0 +1,2760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judith Ren — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --white: #ffffff;
+            --off-white: #f5f5f5;
+            --light-gray: #e8e8e8;
+            --mid-gray: #b0b0b0;
+            --dark-gray: #444444;
+            --text-black: #1a1a1a;
+            --klein-blue: #002FA7;
+            --klein-blue-mid: #1a4fd8;
+            --klein-blue-light: #4a7aff;
+            --klein-blue-pale: #b8d0ff;
+            --klein-blue-faint: #e8f0ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--text-black);
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 12px;
+            height: 12px;
+            border: 1.5px solid var(--klein-blue);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+            mix-blend-mode: multiply;
+        }
+
+        .cursor.hover {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 47, 167, 0.08);
+            border-color: var(--klein-blue);
+        }
+
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--klein-blue);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.05s ease;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 80px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(0, 47, 167, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: width 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .sidebar:hover {
+            width: 200px;
+        }
+
+        .sidebar-logo {
+            position: absolute;
+            top: 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: var(--text-black);
+            opacity: 0.6;
+            writing-mode: vertical-rl;
+            transition: all 0.5s ease;
+        }
+
+        .sidebar:hover .sidebar-logo {
+            writing-mode: horizontal-tb;
+            opacity: 1;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: var(--mid-gray);
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .nav-links a::before {
+            content: '';
+            width: 0;
+            height: 1px;
+            background: var(--klein-blue);
+            transition: width 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-black);
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            width: 30px;
+        }
+
+        .nav-links a.active {
+            color: var(--klein-blue);
+        }
+
+        .nav-text {
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+            white-space: nowrap;
+        }
+
+        .sidebar:hover .nav-text {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .nav-number {
+            font-size: 10px;
+            color: var(--klein-blue);
+            opacity: 0.7;
+        }
+
+        /* Sections */
+        section {
+            min-height: 100vh;
+            padding-left: 80px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            background: var(--white);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Blue dot patterns - layered */
+        .dots-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .dot {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        /* Layer 1: Large faint dots */
+        .dot-lg {
+            width: 80px;
+            height: 80px;
+            background: var(--klein-blue-faint);
+        }
+
+        /* Layer 2: Medium pale dots */
+        .dot-md {
+            width: 40px;
+            height: 40px;
+            background: var(--klein-blue-pale);
+        }
+
+        /* Layer 3: Small light dots */
+        .dot-sm {
+            width: 16px;
+            height: 16px;
+            background: var(--klein-blue-light);
+            opacity: 0.4;
+        }
+
+        /* Layer 4: Tiny solid dots */
+        .dot-xs {
+            width: 6px;
+            height: 6px;
+            background: var(--klein-blue);
+        }
+
+        /* Layer 5: Micro dots */
+        .dot-micro {
+            width: 3px;
+            height: 3px;
+            background: var(--klein-blue-mid);
+            opacity: 0.6;
+        }
+
+        /* Dot positions - scattered artfully */
+        .dot-1 { top: 8%; left: 12%; }
+        .dot-2 { top: 15%; right: 18%; width: 60px; height: 60px; }
+        .dot-3 { top: 25%; left: 35%; }
+        .dot-4 { top: 5%; left: 55%; width: 24px; height: 24px; background: var(--klein-blue-light); opacity: 0.3; }
+        .dot-5 { top: 35%; right: 8%; }
+        .dot-6 { top: 45%; left: 20%; width: 12px; height: 12px; background: var(--klein-blue); }
+        .dot-7 { top: 55%; right: 25%; width: 100px; height: 100px; background: var(--klein-blue-faint); }
+        .dot-8 { top: 65%; left: 8%; width: 20px; height: 20px; background: var(--klein-blue-pale); }
+        .dot-9 { top: 75%; right: 15%; }
+        .dot-10 { top: 85%; left: 30%; width: 8px; height: 8px; }
+        .dot-11 { top: 12%; left: 75%; }
+        .dot-12 { top: 40%; left: 60%; width: 50px; height: 50px; }
+        .dot-13 { top: 70%; right: 40%; width: 14px; height: 14px; background: var(--klein-blue-light); opacity: 0.5; }
+        .dot-14 { top: 20%; left: 5%; width: 10px; height: 10px; }
+        .dot-15 { top: 50%; right: 5%; width: 28px; height: 28px; background: var(--klein-blue-pale); opacity: 0.5; }
+        .dot-16 { top: 88%; right: 60%; width: 4px; height: 4px; }
+        .dot-17 { top: 30%; left: 85%; }
+        .dot-18 { top: 60%; left: 45%; width: 6px; height: 6px; }
+        .dot-19 { top: 80%; left: 70%; width: 32px; height: 32px; background: var(--klein-blue-faint); }
+        .dot-20 { top: 42%; left: 78%; width: 18px; height: 18px; background: var(--klein-blue-pale); opacity: 0.4; }
+
+        /* Floating dots with animation */
+        .dot-float {
+            animation: floatDot 6s ease-in-out infinite;
+        }
+
+        .dot-float-slow {
+            animation: floatDot 10s ease-in-out infinite;
+        }
+
+        .dot-float-reverse {
+            animation: floatDotReverse 8s ease-in-out infinite;
+        }
+
+        @keyframes floatDot {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.05); }
+        }
+
+        @keyframes floatDotReverse {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(12px) scale(0.95); }
+        }
+
+        /* Dotted border frame */
+        .hero-dotted-frame {
+            position: absolute;
+            top: 60px;
+            left: 120px;
+            right: 60px;
+            bottom: 60px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .hero-dotted-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px dashed rgba(0, 47, 167, 0.15);
+            border-radius: 2px;
+        }
+
+        /* Corner dot clusters */
+        .corner-dots {
+            position: absolute;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .corner-dots.top-left {
+            top: 50px;
+            left: 100px;
+        }
+
+        .corner-dots.top-right {
+            top: 50px;
+            right: 50px;
+        }
+
+        .corner-dots.bottom-left {
+            bottom: 50px;
+            left: 100px;
+        }
+
+        .corner-dots.bottom-right {
+            bottom: 50px;
+            right: 50px;
+        }
+
+        .corner-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--klein-blue);
+        }
+
+        /* Background watermark text */
+        .hero-bg-text {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(100px, 18vw, 250px);
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(0, 47, 167, 0.06);
+            white-space: nowrap;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(56px, 12vw, 140px);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            position: relative;
+            color: var(--text-black);
+        }
+
+        .hero-title .char {
+            display: inline-block;
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            will-change: transform;
+        }
+
+        .hero-title .char.blue {
+            color: var(--klein-blue);
+            text-shadow: 0 0 40px rgba(0, 47, 167, 0.2);
+        }
+
+        .hero-title .char.blue-italic {
+            color: var(--klein-blue);
+            font-style: italic;
+            text-shadow: 0 0 40px rgba(0, 47, 167, 0.2);
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+            font-weight: 300;
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .hero-line {
+            width: 60px;
+            height: 1px;
+            background: var(--klein-blue);
+            margin: 30px auto;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            position: relative;
+        }
+
+        .hero-line::before,
+        .hero-line::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border: 1px solid var(--klein-blue);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--white);
+        }
+
+        .hero-line::before {
+            left: -10px;
+        }
+
+        .hero-line::after {
+            right: -10px;
+        }
+
+        .hero-year {
+            position: absolute;
+            bottom: 80px;
+            right: 60px;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--mid-gray);
+            z-index: 3;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.8s forwards;
+        }
+
+        .hero-year span {
+            color: var(--klein-blue);
+            font-size: 14px;
+        }
+
+        .hero-location {
+            position: absolute;
+            top: 50%;
+            right: 50px;
+            transform: translateY(-50%) rotate(90deg);
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+            z-index: 3;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
+            white-space: nowrap;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 1s forwards;
+        }
+
+        .scroll-indicator span {
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--klein-blue), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.5); opacity: 0.5; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==================== PROJECTS SECTION ==================== */
+        .projects {
+            background: var(--off-white);
+            flex-direction: column;
+            padding: 120px 80px 120px 160px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Projects dot pattern */
+        .projects-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .projects-dots .dot {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .section-header {
+            width: 100%;
+            max-width: 1400px;
+            margin-bottom: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 400;
+            line-height: 1.2;
+            color: var(--text-black);
+        }
+
+        .section-title span {
+            color: var(--klein-blue);
+            font-style: italic;
+        }
+
+        .section-desc {
+            font-size: 13px;
+            color: var(--mid-gray);
+            letter-spacing: 1px;
+            max-width: 300px;
+            text-align: right;
+            line-height: 1.8;
+        }
+
+        /* Book Projects */
+        .book-container {
+            width: 100%;
+            max-width: 1400px;
+            perspective: 2000px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .book {
+            width: 100%;
+            height: 450px;
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .book-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fff 0%, #f8f8f8 100%);
+            border: 1px solid rgba(0, 47, 167, 0.1);
+            border-radius: 4px 12px 12px 4px;
+            transform-origin: left center;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+            z-index: 2;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 47, 167, 0.05);
+        }
+
+        .book:hover .book-cover {
+            transform: rotateY(-75deg);
+        }
+
+        .book-cover-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .book-cover-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+            background: var(--klein-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .book-spine {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 100%;
+            background: linear-gradient(to right, #e8e8e8, #f0f0f0);
+            transform: rotateY(-90deg) translateZ(20px);
+            transform-origin: left;
+            border-radius: 4px 0 0 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-spine-text {
+            writing-mode: vertical-rl;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--mid-gray);
+            white-space: nowrap;
+        }
+
+        .book-pages {
+            position: absolute;
+            width: 95%;
+            height: 96%;
+            top: 2%;
+            left: 5%;
+            background: linear-gradient(to right, #f0f0f0 0%, #f8f8f8 5%, #fff 10%, #fff 90%, #f8f8f8 95%, #f0f0f0 100%);
+            border-radius: 2px 8px 8px 2px;
+            box-shadow: inset 4px 0 10px rgba(0,0,0,0.03);
+            z-index: 1;
+        }
+
+        .book-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 0;
+            background: var(--white);
+            border-radius: 4px 12px 12px 4px;
+            border: 1px solid rgba(0, 47, 167, 0.08);
+        }
+
+        .book-project-number {
+            font-size: 12px;
+            color: var(--klein-blue);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .book-project-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 15px;
+            line-height: 1.3;
+            color: var(--text-black);
+        }
+
+        .book-project-meta {
+            font-size: 12px;
+            color: var(--mid-gray);
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .book-project-desc {
+            font-size: 14px;
+            color: var(--dark-gray);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .book-project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--klein-blue);
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: gap 0.3s ease;
+        }
+
+        .book-project-link:hover {
+            gap: 20px;
+        }
+
+        .book-cover-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--text-black);
+        }
+
+        .book-cover-category {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--klein-blue);
+        }
+
+        /* ==================== CONTACT SECTION ==================== */
+        .contact {
+            background: var(--white);
+            flex-direction: column;
+            text-align: center;
+            padding: 120px 80px;
+            position: relative;
+        }
+
+        /* Contact dot pattern */
+        .contact-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .contact h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 5vw, 64px);
+            font-weight: 400;
+            margin-bottom: 20px;
+            color: var(--text-black);
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact h2 span {
+            color: var(--klein-blue);
+            font-style: italic;
+        }
+
+        .contact > p {
+            color: var(--mid-gray);
+            font-size: 15px;
+            margin-bottom: 60px;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-email {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(20px, 3vw, 36px);
+            color: var(--text-black);
+            text-decoration: none;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 80px;
+            transition: color 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-email::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--klein-blue);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .contact-email:hover {
+            color: var(--klein-blue);
+        }
+
+        .contact-email:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .social-links a {
+            color: var(--mid-gray);
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: color 0.4s ease;
+            position: relative;
+        }
+
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--klein-blue);
+            transition: width 0.4s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--text-black);
+        }
+
+        .social-links a:hover::before {
+            width: 100%;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 40px;
+            font-size: 11px;
+            color: var(--mid-gray);
+            letter-spacing: 2px;
+            z-index: 1;
+        }
+
+
+        /* ==================== TECHNIQUES SECTION ==================== */
+        .techniques {
+            background: linear-gradient(180deg, var(--off-white) 0%, var(--white) 100%);
+            flex-direction: column;
+            padding: 120px 80px 120px 160px;
+            overflow: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .techniques-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .techniques-grid {
+            width: 100%;
+            max-width: 1400px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+            perspective: 2000px;
+        }
+
+        /* 3D Rotating Card */
+        .tech-card {
+            position: relative;
+            height: 500px;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .tech-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .tech-card:hover .tech-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .tech-card-front,
+        .tech-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 47, 167, 0.08);
+        }
+
+        .tech-card-front {
+            background: var(--white);
+            border: 1px solid rgba(0, 47, 167, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .tech-icon-container {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        /* 3D rotating cube icon */
+        .tech-cube {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transform-style: preserve-3d;
+            animation: rotateCube 8s linear infinite;
+        }
+
+        .tech-cube-face {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--klein-blue);
+            background: rgba(0, 47, 167, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--klein-blue);
+        }
+
+        .tech-cube-face:nth-child(1) { transform: translateZ(40px); }
+        .tech-cube-face:nth-child(2) { transform: rotateY(90deg) translateZ(40px); }
+        .tech-cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(40px); }
+        .tech-cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(40px); }
+        .tech-cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(40px); }
+        .tech-cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(40px); }
+
+        @keyframes rotateCube {
+            0% { transform: translate(-50%, -50%) rotateX(0deg) rotateY(0deg); }
+            100% { transform: translate(-50%, -50%) rotateX(360deg) rotateY(360deg); }
+        }
+
+        /* Laser cutting - animated lines */
+        .tech-laser-container {
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .tech-laser-beam {
+            position: absolute;
+            background: var(--klein-blue);
+            opacity: 0.6;
+        }
+
+        .tech-laser-beam.horizontal {
+            height: 2px;
+            width: 100%;
+            animation: laserScanH 3s ease-in-out infinite;
+        }
+
+        .tech-laser-beam.vertical {
+            width: 2px;
+            height: 100%;
+            animation: laserScanV 3s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes laserScanH {
+            0%, 100% { top: 0; opacity: 0.3; }
+            50% { top: 100%; opacity: 1; box-shadow: 0 0 10px var(--klein-blue); }
+        }
+
+        @keyframes laserScanV {
+            0%, 100% { left: 0; opacity: 0.3; }
+            50% { left: 100%; opacity: 1; box-shadow: 0 0 10px var(--klein-blue); }
+        }
+
+        .tech-laser-grid {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px dashed rgba(0, 47, 167, 0.3);
+        }
+
+        /* Model making - floating particles */
+        .tech-model-container {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            perspective: 600px;
+        }
+
+        .tech-model-layer {
+            position: absolute;
+            border: 2px solid var(--klein-blue);
+            background: rgba(0, 47, 167, 0.03);
+            animation: modelFloat 4s ease-in-out infinite;
+        }
+
+        .tech-model-layer:nth-child(1) {
+            width: 80px; height: 80px;
+            top: 10px; left: 10px;
+            animation-delay: 0s;
+        }
+        .tech-model-layer:nth-child(2) {
+            width: 60px; height: 60px;
+            top: 20px; left: 20px;
+            animation-delay: 0.5s;
+            opacity: 0.7;
+        }
+        .tech-model-layer:nth-child(3) {
+            width: 40px; height: 40px;
+            top: 30px; left: 30px;
+            animation-delay: 1s;
+            opacity: 0.5;
+        }
+        .tech-model-layer:nth-child(4) {
+            width: 20px; height: 20px;
+            top: 40px; left: 40px;
+            animation-delay: 1.5s;
+            opacity: 0.3;
+        }
+
+        @keyframes modelFloat {
+            0%, 100% { transform: translateZ(0) rotate(0deg); }
+            50% { transform: translateZ(30px) rotate(5deg); }
+        }
+
+        .tech-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--text-black);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .tech-card-subtitle {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--klein-blue);
+            margin-bottom: 20px;
+        }
+
+        .tech-card-desc {
+            font-size: 14px;
+            color: var(--dark-gray);
+            line-height: 1.8;
+            text-align: center;
+            max-width: 280px;
+        }
+
+        /* Card Back */
+        .tech-card-back {
+            background: linear-gradient(135deg, var(--klein-blue) 0%, var(--klein-blue-mid) 100%);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            color: white;
+        }
+
+        .tech-card-back h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: white;
+        }
+
+        .tech-skill-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .tech-skill-list li {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0.9;
+        }
+
+        .tech-skill-dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .tech-skill-bar {
+            width: 100%;
+            height: 3px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .tech-skill-fill {
+            height: 100%;
+            background: rgba(255,255,255,0.8);
+            border-radius: 2px;
+            animation: skillFill 1.5s ease-out forwards;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        .tech-card:hover .tech-skill-fill {
+            animation: skillFill 1.5s ease-out forwards;
+        }
+
+        @keyframes skillFill {
+            to { transform: scaleX(1); }
+        }
+
+        .tech-back-desc {
+            font-size: 13px;
+            line-height: 1.8;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+
+        /* Scroll reveal for technique cards */
+        .tech-card {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .tech-card.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tech-card:nth-child(1) { transition-delay: 0s; }
+        .tech-card:nth-child(2) { transition-delay: 0.15s; }
+        .tech-card:nth-child(3) { transition-delay: 0.3s; }
+
+        /* 3D Model Viewer Section */
+        .model-viewer-section {
+            width: 100%;
+            max-width: 1400px;
+            margin-top: 100px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .model-viewer-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .model-viewer-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(24px, 3vw, 40px);
+            color: var(--text-black);
+            margin-bottom: 15px;
+        }
+
+        .model-viewer-header p {
+            font-size: 14px;
+            color: var(--mid-gray);
+            letter-spacing: 1px;
+        }
+
+        /* Interactive 3D rotating showcase */
+        .rotating-showcase {
+            width: 100%;
+            height: 500px;
+            position: relative;
+            perspective: 1200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .showcase-ring {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            transform-style: preserve-3d;
+            animation: ringRotate 20s linear infinite;
+        }
+
+        @keyframes ringRotate {
+            0% { transform: rotateX(70deg) rotateZ(0deg); }
+            100% { transform: rotateX(70deg) rotateZ(360deg); }
+        }
+
+        .showcase-item {
+            position: absolute;
+            width: 120px;
+            height: 160px;
+            left: 50%;
+            top: 50%;
+            margin-left: -60px;
+            margin-top: -80px;
+            background: var(--white);
+            border: 1px solid rgba(0, 47, 167, 0.15);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-shadow: 0 4px 20px rgba(0, 47, 167, 0.06);
+            backface-visibility: visible;
+        }
+
+        .showcase-item:nth-child(1) { transform: rotateZ(0deg) translateY(-200px) rotateX(-70deg); }
+        .showcase-item:nth-child(2) { transform: rotateZ(72deg) translateY(-200px) rotateX(-70deg); }
+        .showcase-item:nth-child(3) { transform: rotateZ(144deg) translateY(-200px) rotateX(-70deg); }
+        .showcase-item:nth-child(4) { transform: rotateZ(216deg) translateY(-200px) rotateX(-70deg); }
+        .showcase-item:nth-child(5) { transform: rotateZ(288deg) translateY(-200px) rotateX(-70deg); }
+
+        .showcase-item-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .showcase-item-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--klein-blue);
+            text-align: center;
+        }
+
+        .showcase-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--klein-blue-faint), var(--klein-blue-pale));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 60px rgba(0, 47, 167, 0.15);
+        }
+
+        .showcase-center span {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            color: var(--klein-blue);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Mouse-interactive 3D tilt card */
+        .tilt-card-container {
+            width: 100%;
+            max-width: 1400px;
+            margin-top: 80px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tilt-card {
+            height: 300px;
+            background: var(--white);
+            border: 1px solid rgba(0, 47, 167, 0.08);
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tilt-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 47, 167, 0.03) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .tilt-card:hover::before {
+            opacity: 1;
+        }
+
+        .tilt-card-content {
+            position: relative;
+            z-index: 1;
+            transform: translateZ(30px);
+        }
+
+        .tilt-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--text-black);
+            margin-bottom: 15px;
+        }
+
+        .tilt-card p {
+            font-size: 14px;
+            color: var(--dark-gray);
+            line-height: 1.8;
+        }
+
+        .tilt-card-tags {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tilt-card-tag {
+            padding: 6px 16px;
+            border: 1px solid rgba(0, 47, 167, 0.15);
+            border-radius: 20px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--klein-blue);
+            background: rgba(0, 47, 167, 0.03);
+        }
+
+        @media (max-width: 1024px) {
+            .techniques {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+            .techniques-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+            .tilt-card-container {
+                grid-template-columns: 1fr;
+            }
+            .showcase-ring {
+                width: 300px;
+                height: 300px;
+            }
+            .showcase-item {
+                width: 100px;
+                height: 130px;
+            }
+            .showcase-item:nth-child(1) { transform: rotateZ(0deg) translateY(-150px) rotateX(-70deg); }
+            .showcase-item:nth-child(2) { transform: rotateZ(72deg) translateY(-150px) rotateX(-70deg); }
+            .showcase-item:nth-child(3) { transform: rotateZ(144deg) translateY(-150px) rotateX(-70deg); }
+            .showcase-item:nth-child(4) { transform: rotateZ(216deg) translateY(-150px) rotateX(-70deg); }
+            .showcase-item:nth-child(5) { transform: rotateZ(288deg) translateY(-150px) rotateX(-70deg); }
+        }
+
+        @media (max-width: 768px) {
+            .techniques {
+                padding: 80px 20px;
+            }
+            .rotating-showcase {
+                height: 350px;
+            }
+        }
+
+
+        /* ==================== REFLECTION SECTION ==================== */
+        .reflection {
+            background: linear-gradient(180deg, var(--white) 0%, var(--off-white) 100%);
+            flex-direction: column;
+            padding: 120px 80px 120px 160px;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reflection-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .reflection-content {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .reflection-text {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .reflection-intro {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--dark-gray);
+            max-width: 700px;
+        }
+
+        .reflection-highlight {
+            position: relative;
+            background: var(--white);
+            border: 1px solid rgba(0, 47, 167, 0.1);
+            border-radius: 12px;
+            padding: 50px 40px 40px 50px;
+            margin: 20px 0;
+            box-shadow: 0 4px 30px rgba(0, 47, 167, 0.05);
+        }
+
+        .reflection-quote-mark {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-family: 'Playfair Display', serif;
+            font-size: 80px;
+            color: var(--klein-blue);
+            opacity: 0.15;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .reflection-highlight p {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            line-height: 1.9;
+            color: var(--text-black);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .reflection-body {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--dark-gray);
+            max-width: 700px;
+        }
+
+        .reflection-ending {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            line-height: 1.6;
+            color: var(--klein-blue);
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        @media (max-width: 1024px) {
+            .reflection {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .reflection {
+                padding: 80px 20px;
+            }
+            .reflection-highlight {
+                padding: 40px 25px 30px 30px;
+            }
+            .reflection-quote-mark {
+                font-size: 60px;
+                top: 15px;
+                left: 20px;
+            }
+            .reflection-highlight p {
+                font-size: 17px;
+            }
+            .reflection-ending {
+                font-size: 19px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 100%;
+                height: 60px;
+                flex-direction: row;
+                top: auto;
+                bottom: 0;
+                border-right: none;
+                border-top: 1px solid rgba(0, 47, 167, 0.08);
+            }
+
+            .sidebar:hover {
+                width: 100%;
+            }
+
+            .sidebar-logo {
+                display: none;
+            }
+
+            .nav-links {
+                flex-direction: row;
+                gap: 30px;
+            }
+
+            .nav-text {
+                opacity: 1;
+                transform: none;
+            }
+
+            section {
+                padding-left: 0;
+                padding-bottom: 80px;
+            }
+
+            .projects {
+                padding-left: 40px;
+                padding-right: 40px;
+            }
+
+            .book-container {
+                grid-template-columns: 1fr;
+            }
+
+            .cursor, .cursor-dot {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            .hero-location {
+                display: none;
+            }
+
+            .hero-year {
+                right: 30px;
+                bottom: 100px;
+            }
+
+            .hero-dotted-frame {
+                left: 40px;
+                right: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .section-desc {
+                text-align: left;
+            }
+
+            .hero-dotted-frame {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">JR</div>
+        <ul class="nav-links">
+            <li>
+                <a href="#hero" class="active" data-section="hero">
+                    <span class="nav-number">01</span>
+                    <span class="nav-text">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#projects" data-section="projects">
+                    <span class="nav-number">02</span>
+                    <span class="nav-text">Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="#techniques" data-section="techniques">
+                    <span class="nav-number">03</span>
+                    <span class="nav-text">Techniques</span>
+                </a>
+            </li>
+            <li>
+                <a href="#reflection" data-section="reflection">
+                    <span class="nav-number">04</span>
+                    <span class="nav-text">Reflection</span>
+                </a>
+            </li>
+            <li>
+                <a href="#contact" data-section="contact">
+                    <span class="nav-number">05</span>
+                    <span class="nav-text">Contact</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="hero" class="hero">
+        <!-- Layered dot pattern -->
+        <div class="dots-layer">
+            <!-- Large faint dots -->
+            <div class="dot dot-lg dot-1 dot-float-slow"></div>
+            <div class="dot dot-lg dot-7 dot-float"></div>
+            <div class="dot dot-lg dot-19 dot-float-reverse"></div>
+
+            <!-- Medium pale dots -->
+            <div class="dot dot-md dot-2 dot-float"></div>
+            <div class="dot dot-md dot-5 dot-float-slow"></div>
+            <div class="dot dot-md dot-12 dot-float-reverse"></div>
+
+            <!-- Small light dots -->
+            <div class="dot dot-sm dot-3 dot-float"></div>
+            <div class="dot dot-sm dot-8 dot-float-slow"></div>
+            <div class="dot dot-sm dot-13 dot-float-reverse"></div>
+            <div class="dot dot-sm dot-20 dot-float"></div>
+
+            <!-- Tiny solid dots -->
+            <div class="dot dot-xs dot-6 dot-float-slow"></div>
+            <div class="dot dot-xs dot-9 dot-float"></div>
+            <div class="dot dot-xs dot-10 dot-float-reverse"></div>
+            <div class="dot dot-xs dot-14 dot-float"></div>
+            <div class="dot dot-xs dot-15 dot-float-slow"></div>
+            <div class="dot dot-xs dot-17 dot-float-reverse"></div>
+
+            <!-- Micro dots -->
+            <div class="dot dot-micro dot-4 dot-float"></div>
+            <div class="dot dot-micro dot-11 dot-float-slow"></div>
+            <div class="dot dot-micro dot-16 dot-float-reverse"></div>
+            <div class="dot dot-micro dot-18 dot-float"></div>
+        </div>
+
+        <!-- Dotted border frame -->
+        <div class="hero-dotted-frame"></div>
+
+        <!-- Corner dot clusters -->
+        <div class="corner-dots top-left">
+            <div class="corner-dot" style="width:8px;height:8px;top:0;left:0;"></div>
+            <div class="corner-dot" style="width:4px;height:4px;top:15px;left:20px;opacity:0.5;"></div>
+            <div class="corner-dot" style="width:6px;height:6px;top:25px;left:5px;opacity:0.3;"></div>
+            <div class="corner-dot" style="width:3px;height:3px;top:5px;left:30px;opacity:0.6;"></div>
+        </div>
+        <div class="corner-dots top-right">
+            <div class="corner-dot" style="width:8px;height:8px;top:0;right:0;"></div>
+            <div class="corner-dot" style="width:4px;height:4px;top:15px;right:20px;opacity:0.5;"></div>
+            <div class="corner-dot" style="width:6px;height:6px;top:25px;right:5px;opacity:0.3;"></div>
+            <div class="corner-dot" style="width:3px;height:3px;top:5px;right:30px;opacity:0.6;"></div>
+        </div>
+        <div class="corner-dots bottom-left">
+            <div class="corner-dot" style="width:8px;height:8px;bottom:0;left:0;"></div>
+            <div class="corner-dot" style="width:4px;height:4px;bottom:15px;left:20px;opacity:0.5;"></div>
+            <div class="corner-dot" style="width:6px;height:6px;bottom:25px;left:5px;opacity:0.3;"></div>
+            <div class="corner-dot" style="width:3px;height:3px;bottom:5px;left:30px;opacity:0.6;"></div>
+        </div>
+        <div class="corner-dots bottom-right">
+            <div class="corner-dot" style="width:8px;height:8px;bottom:0;right:0;"></div>
+            <div class="corner-dot" style="width:4px;height:4px;bottom:15px;right:20px;opacity:0.5;"></div>
+            <div class="corner-dot" style="width:6px;height:6px;bottom:25px;right:5px;opacity:0.3;"></div>
+            <div class="corner-dot" style="width:3px;height:3px;bottom:5px;right:30px;opacity:0.6;"></div>
+        </div>
+
+        <!-- Background watermark -->
+        <div class="hero-bg-text">JUDITH REN</div>
+
+        <!-- Content -->
+        <div class="hero-content">
+            <h1 class="hero-title" id="heroTitle">Judith Ren</h1>
+            <div class="hero-line"></div>
+            <p class="hero-subtitle">Creative Developer & Designer</p>
+        </div>
+
+        <!-- Side elements -->
+        <div class="hero-year"><span>©</span> 2024</div>
+        <div class="hero-location">Based in the Digital Realm</div>
+
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ==================== PROJECTS SECTION ==================== -->
+    <section id="projects" class="projects">
+        <!-- Projects dot pattern -->
+        <div class="projects-dots">
+            <div class="dot dot-lg" style="top:10%;right:5%;width:120px;height:120px;background:var(--klein-blue-faint);"></div>
+            <div class="dot dot-md" style="top:30%;left:3%;width:50px;height:50px;background:var(--klein-blue-pale);opacity:0.4;"></div>
+            <div class="dot dot-sm" style="top:60%;right:8%;width:20px;height:20px;background:var(--klein-blue-light);opacity:0.3;"></div>
+            <div class="dot dot-xs" style="top:80%;left:10%;width:8px;height:8px;background:var(--klein-blue);"></div>
+            <div class="dot dot-micro" style="top:45%;right:15%;width:4px;height:4px;background:var(--klein-blue-mid);"></div>
+            <div class="dot dot-md" style="top:75%;left:50%;width:30px;height:30px;background:var(--klein-blue-pale);opacity:0.3;"></div>
+            <div class="dot dot-xs" style="top:15%;left:40%;width:10px;height:10px;background:var(--klein-blue);opacity:0.5;"></div>
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">Selected<br><span>Projects</span></h2>
+            <p class="section-desc">A curated collection of works spanning digital design, interactive experiences, and creative development.</p>
+        </div>
+
+        <div class="book-container">
+            <!-- Project 1: UWC Value Bag Design -->
+            <div class="book" onclick="openProjectDetail('uwc-value-bag')" style="cursor: pointer;">
+                <div class="book-cover">
+                    <div class="book-cover-front" style="background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 40%), url('BagDesignF.png'); background-size: cover; background-position: center;">
+                        <h3 class="book-cover-title">UWC Value Bag</h3>
+                        <span class="book-cover-category">Textile Design</span>
+                    </div>
+                    <div class="book-cover-back">01</div>
+                    <div class="book-spine">
+                        <span class="book-spine-text">UWC Value Bag</span>
+                    </div>
+                </div>
+                <div class="book-pages"></div>
+                <div class="book-content">
+                    <span class="book-project-number">01 / 05</span>
+                    <h3 class="book-project-title">UWC Value Bag Design</h3>
+                    <div class="book-project-meta">
+                        <span>2024</span>
+                        <span>Textile</span>
+                        <span>Wax Dyeing</span>
+                    </div>
+                    <p class="book-project-desc">Based on ripples, integrated into the shape of yin and yang symbol. Indicates that each one of us is like a water droplet falling into the sea. The ripple (influence) we cause will affect each other mutually. Simultaneously, yin yang represents balance and boundary within collaboration.</p>
+                    <a href="javascript:void(0)" class="book-project-link" onclick="event.stopPropagation(); openProjectDetail('uwc-value-bag')">View Project <span>→</span></a>
+                </div>
+            </div>
+
+            <!-- Project 2: Light Up SDG -->
+            <div class="book" onclick="openProjectDetail('light-up-sdg')" style="cursor: pointer;">
+                <div class="book-cover">
+                    <div class="book-cover-front" style="background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 40%), url('LightUpSDGB.png'); background-size: cover; background-position: center;">
+                        <h3 class="book-cover-title" style="color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Light Up SDG</h3>
+                        <span class="book-cover-category">Product Design</span>
+                    </div>
+                    <div class="book-cover-back">02</div>
+                    <div class="book-spine">
+                        <span class="book-spine-text">Light Up SDG</span>
+                    </div>
+                </div>
+                <div class="book-pages"></div>
+                <div class="book-content">
+                    <span class="book-project-number">02 / 05</span>
+                    <h3 class="book-project-title">Light Up SDG</h3>
+                    <div class="book-project-meta">
+                        <span>2024</span>
+                        <span>Product Design</span>
+                        <span>Interactive Lighting</span>
+                    </div>
+                    <p class="book-project-desc">An interactive desk lamp designed to raise awareness for SDG 14 — Life Below Water. Through layered acrylic, 3D-printed coral structures, and dynamic LED lighting, the product visualizes the hidden beauty of marine ecosystems and the impact of human activity.</p>
+                    <a href="javascript:void(0)" class="book-project-link" onclick="event.stopPropagation(); openProjectDetail('light-up-sdg')">View Project <span>→</span></a>
+                </div>
+            </div>
+
+            <!-- Project 3: Endanzoo -->
+            <div class="book" onclick="openProjectDetail('endanzoo')" style="cursor: pointer;">
+                <div class="book-cover">
+                    <div class="book-cover-front" style="background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 40%), url('Endanzoo.png'); background-size: cover; background-position: center;">
+                        <h3 class="book-cover-title" style="color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Endanzoo</h3>
+                        <span class="book-cover-category">Mechanical Sculpture</span>
+                    </div>
+                    <div class="book-cover-back">03</div>
+                    <div class="book-spine">
+                        <span class="book-spine-text">Endanzoo</span>
+                    </div>
+                </div>
+                <div class="book-pages"></div>
+                <div class="book-content">
+                    <span class="book-project-number">03 / 05</span>
+                    <h3 class="book-project-title">Endanzoo</h3>
+                    <div class="book-project-meta">
+                        <span>2024</span>
+                        <span>Mechanical Sculpture</span>
+                        <span>Interactive Design</span>
+                    </div>
+                    <p class="book-project-desc">A mechanical interactive sculpture centered on the critically endangered Amur leopard. Through hand-cranked cam mechanisms, the sculpture brings the leopard and its snowy habitat to life, educating children about wildlife conservation through tactile engagement.</p>
+                    <a href="javascript:void(0)" class="book-project-link" onclick="event.stopPropagation(); openProjectDetail('endanzoo')">View Project <span>→</span></a>
+                </div>
+            </div>
+
+            <!-- Project 4: Community Space Design -->
+            <div class="book" onclick="openProjectDetail('community-space')" style="cursor: pointer;">
+                <div class="book-cover">
+                    <div class="book-cover-front" style="background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 40%), url('CMDF.png'); background-size: cover; background-position: center;">
+                        <h3 class="book-cover-title" style="color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Community Space</h3>
+                        <span class="book-cover-category">Architecture</span>
+                    </div>
+                    <div class="book-cover-back">04</div>
+                    <div class="book-spine">
+                        <span class="book-spine-text">Community Space</span>
+                    </div>
+                </div>
+                <div class="book-pages"></div>
+                <div class="book-content">
+                    <span class="book-project-number">04 / 05</span>
+                    <h3 class="book-project-title">Community Space Design</h3>
+                    <div class="book-project-meta">
+                        <span>2025</span>
+                        <span>Architecture</span>
+                        <span>Spatial Design</span>
+                    </div>
+                    <p class="book-project-desc">An outdoor lakeside community space designed for all age groups — children, teenagers, adults, and the elderly. Through biophilic design principles, the space encourages intergenerational interaction while respecting the natural environment.</p>
+                    <a href="javascript:void(0)" class="book-project-link" onclick="event.stopPropagation(); openProjectDetail('community-space')">View Project <span>→</span></a>
+                </div>
+            </div>
+
+            <!-- Project 5: Workshop Layout -->
+            <div class="book" onclick="openProjectDetail('workshop-layout')" style="cursor: pointer;">
+                <div class="book-cover">
+                    <div class="book-cover-front" style="background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 40%), url('DTworkshop.jpg'); background-size: cover; background-position: center;">
+                        <h3 class="book-cover-title" style="color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Workshop Layout</h3>
+                        <span class="book-cover-category">Technical Drawing</span>
+                    </div>
+                    <div class="book-cover-back">05</div>
+                    <div class="book-spine">
+                        <span class="book-spine-text">Workshop Layout</span>
+                    </div>
+                </div>
+                <div class="book-pages"></div>
+                <div class="book-content">
+                    <span class="book-project-number">05 / 05</span>
+                    <h3 class="book-project-title">Workshop Layout</h3>
+                    <div class="book-project-meta">
+                        <span>2025</span>
+                        <span>Technical Drawing</span>
+                        <span>Measured Survey</span>
+                    </div>
+                    <p class="book-project-desc">A precise floor plan of our school's workshop drawn to scale from real measurements. Every dimension was carefully recorded on-site and translated into an accurate technical drawing showing equipment placement, workflow zones, and spatial organization.</p>
+                    <a href="javascript:void(0)" class="book-project-link" onclick="event.stopPropagation(); openProjectDetail('workshop-layout')">View Project <span>→</span></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== TECHNIQUES SECTION ==================== -->
+    <section id="techniques" class="techniques">
+        <!-- Techniques dot pattern -->
+        <div class="techniques-dots">
+            <div class="dot" style="top:8%;right:10%;width:100px;height:100px;background:var(--klein-blue-faint);border-radius:50%;"></div>
+            <div class="dot" style="top:25%;left:5%;width:40px;height:40px;background:var(--klein-blue-pale);opacity:0.4;border-radius:50%;"></div>
+            <div class="dot" style="top:55%;right:3%;width:16px;height:16px;background:var(--klein-blue-light);opacity:0.3;border-radius:50%;"></div>
+            <div class="dot" style="top:75%;left:15%;width:60px;height:60px;background:var(--klein-blue-faint);border-radius:50%;"></div>
+            <div class="dot" style="top:40%;left:8%;width:6px;height:6px;background:var(--klein-blue);border-radius:50%;"></div>
+            <div class="dot" style="top:90%;right:20%;width:25px;height:25px;background:var(--klein-blue-pale);opacity:0.3;border-radius:50%;"></div>
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">Tools &<br><span>Techniques</span></h2>
+            <p class="section-desc">A collection of technical skills and creative methods developed through hands-on project work across design disciplines.</p>
+        </div>
+
+        <div class="techniques-grid">
+            <!-- 3D Modeling Card -->
+            <div class="tech-card">
+                <div class="tech-card-inner">
+                    <div class="tech-card-front">
+                        <div class="tech-icon-container">
+                            <div class="tech-cube">
+                                <div class="tech-cube-face">3D</div>
+                                <div class="tech-cube-face"></div>
+                                <div class="tech-cube-face"></div>
+                                <div class="tech-cube-face"></div>
+                                <div class="tech-cube-face"></div>
+                                <div class="tech-cube-face"></div>
+                            </div>
+                        </div>
+                        <h3 class="tech-card-title">3D Modeling</h3>
+                        <span class="tech-card-subtitle">Digital Fabrication</span>
+                        <p class="tech-card-desc">Creating precise digital models for prototyping, visualization, and manufacturing across product and spatial design projects.</p>
+                    </div>
+                    <div class="tech-card-back">
+                        <h3>3D Modeling Skills</h3>
+                        <ul class="tech-skill-list">
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    Blender
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 85%;"></div></div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    OnShape
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 75%;"></div></div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    3D Printing Prep
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 80%;"></div></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="tech-back-desc">Used in: Light Up SDG, Endanzoo, Community Space</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Laser Cutting Card -->
+            <div class="tech-card">
+                <div class="tech-card-inner">
+                    <div class="tech-card-front">
+                        <div class="tech-icon-container">
+                            <div class="tech-laser-container">
+                                <div class="tech-laser-grid"></div>
+                                <div class="tech-laser-beam horizontal"></div>
+                                <div class="tech-laser-beam vertical"></div>
+                            </div>
+                        </div>
+                        <h3 class="tech-card-title">Laser Cutting</h3>
+                        <span class="tech-card-subtitle">Precision Fabrication</span>
+                        <p class="tech-card-desc">Translating digital designs into physical objects with high-precision laser cutting for intricate patterns and structural components.</p>
+                    </div>
+                    <div class="tech-card-back">
+                        <h3>Laser Cutting Skills</h3>
+                        <ul class="tech-skill-list">
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    Vector File Prep (Illustrator)
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 90%;"></div></div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    Material Settings
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 75%;"></div></div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    Acrylic / Wood / Cardboard
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 85%;"></div></div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    Kerf Compensation
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 65%;"></div></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="tech-back-desc">Used in: Light Up SDG, Endanzoo, Community Space</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Making Card -->
+            <div class="tech-card">
+                <div class="tech-card-inner">
+                    <div class="tech-card-front">
+                        <div class="tech-icon-container">
+                            <div class="tech-model-container">
+                                <div class="tech-model-layer"></div>
+                                <div class="tech-model-layer"></div>
+                                <div class="tech-model-layer"></div>
+                                <div class="tech-model-layer"></div>
+                            </div>
+                        </div>
+                        <h3 class="tech-card-title">Model Making</h3>
+                        <span class="tech-card-subtitle">Physical Prototyping</span>
+                        <p class="tech-card-desc">Building physical prototypes and scale models using diverse materials and techniques to validate designs and communicate spatial ideas.</p>
+                    </div>
+                    <div class="tech-card-back">
+                        <h3>Model Making Skills</h3>
+                        <ul class="tech-skill-list">
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    Scale Models (1:50 / 1:100)
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 88%;"></div></div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    Woodworking & Joinery
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 72%;"></div></div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    Foam & Clay Sculpting
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 78%;"></div></div>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="tech-skill-dot"></span>
+                                <div style="flex:1;">
+                                    Material Finishing
+                                    <div class="tech-skill-bar"><div class="tech-skill-fill" style="width: 82%;"></div></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <p class="tech-back-desc">Used in: Community Space, Endanzoo, Light Up SDG</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3D Rotating Showcase -->
+        <div class="model-viewer-section">
+            <div class="model-viewer-header">
+                <h3>Process <span style="color: var(--klein-blue); font-style: italic;">Pipeline</span></h3>
+                <p>From digital concept to physical reality — the iterative workflow behind every project</p>
+            </div>
+            <div class="rotating-showcase">
+                <div class="showcase-ring">
+                    <div class="showcase-item">
+                        <div class="showcase-item-icon">✏️</div>
+                        <span class="showcase-item-label">Sketch</span>
+                    </div>
+                    <div class="showcase-item">
+                        <div class="showcase-item-icon">💻</div>
+                        <span class="showcase-item-label">Model</span>
+                    </div>
+                    <div class="showcase-item">
+                        <div class="showcase-item-icon">⚡</div>
+                        <span class="showcase-item-label">Prototype</span>
+                    </div>
+                    <div class="showcase-item">
+                        <div class="showcase-item-icon">🔧</div>
+                        <span class="showcase-item-label">Fabricate</span>
+                    </div>
+                    <div class="showcase-item">
+                        <div class="showcase-item-icon">✨</div>
+                        <span class="showcase-item-label">Refine</span>
+                    </div>
+                    <div class="showcase-center">
+                        <span>Design<br>Loop</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Tilt Cards -->
+        <div class="tilt-card-container">
+            <div class="tilt-card" data-tilt>
+                <div class="tilt-card-content">
+                    <h4>Additional Skills</h4>
+                    <p>Wax dyeing, textile sewing, mechanical cam design, interactive electronics with Arduino, biophilic design principles, and user-centered research methods.</p>
+                    <div class="tilt-card-tags">
+                        <span class="tilt-card-tag">Wax Dyeing</span>
+                        <span class="tilt-card-tag">Arduino</span>
+                        <span class="tilt-card-tag">User Research</span>
+                        <span class="tilt-card-tag">Biophilic</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tilt-card" data-tilt>
+                <div class="tilt-card-content">
+                    <h4>Software Toolkit</h4>
+                    <p>Proficient in Blender, Canva, Figma, and OnShape. Comfortable with both parametric and organic modeling workflows.</p>
+                    <div class="tilt-card-tags">
+                        <span class="tilt-card-tag">Blender</span>
+                        <span class="tilt-card-tag">Canva</span>
+                        <span class="tilt-card-tag">Figma</span>
+                        <span class="tilt-card-tag">OnShape</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== REFLECTION SECTION ==================== -->
+    <section id="reflection" class="reflection">
+        <div class="reflection-dots">
+            <div class="dot" style="top:10%;left:8%;width:50px;height:50px;background:var(--klein-blue-faint);border-radius:50%;"></div>
+            <div class="dot" style="top:20%;right:12%;width:20px;height:20px;background:var(--klein-blue-pale);opacity:0.4;border-radius:50%;"></div>
+            <div class="dot" style="top:60%;left:15%;width:8px;height:8px;background:var(--klein-blue-light);opacity:0.3;border-radius:50%;"></div>
+            <div class="dot" style="top:75%;right:20%;width:40px;height:40px;background:var(--klein-blue-faint);border-radius:50%;"></div>
+            <div class="dot" style="top:40%;left:5%;width:4px;height:4px;background:var(--klein-blue);border-radius:50%;"></div>
+        </div>
+
+        <div class="reflection-content">
+            <div class="section-header" style="margin-bottom: 60px;">
+                <h2 class="section-title">My<br><span style="color: var(--klein-blue); font-style: italic;">Reflection</span></h2>
+            </div>
+
+            <div class="reflection-text">
+                <p class="reflection-intro">
+                    To be honest, when I first started taking DT classes, I had no idea what I was doing. But looking back now, it's unbelievable that I actually made these things.
+                </p>
+
+                <div class="reflection-highlight">
+                    <span class="reflection-quote-mark">"</span>
+                    <p>
+                        My deepest memory is not how perfect a project was, but those nights when I stayed up late with friends. When doing DT homework, we often stay late in the classroom, chatting while doing things, and sometimes we even order takeout together. Once we were doing Endanzoo, we tried many times to adjust that mechanism, but it didn't work. Finally, we succeeded before curling, and everyone was very excited. Although I was very tired during class the next day, the feeling of solving problems together was great.
+                    </p>
+                </div>
+
+                <p class="reflection-body">
+                    DT taught me how to turn ideas into real things instead of just staying on paper. I have also learned that failure is nothing, because every time you fail, you will know how to do better next time. However, DT does owe me a lot of sleep, and it is responsible for this.
+                </p>
+
+                <p class="reflection-ending">
+                    These projects are proof of the time I spent with my friends.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT SECTION ==================== -->
+    <section id="contact" class="contact">
+        <!-- Contact dot pattern -->
+        <div class="contact-dots">
+            <div class="dot" style="top:15%;left:8%;width:60px;height:60px;background:var(--klein-blue-faint);border-radius:50%;"></div>
+            <div class="dot" style="top:25%;right:12%;width:30px;height:30px;background:var(--klein-blue-pale);opacity:0.4;border-radius:50%;"></div>
+            <div class="dot" style="top:60%;left:15%;width:12px;height:12px;background:var(--klein-blue-light);opacity:0.3;border-radius:50%;"></div>
+            <div class="dot" style="top:70%;right:20%;width:80px;height:80px;background:var(--klein-blue-faint);border-radius:50%;"></div>
+            <div class="dot" style="top:40%;left:5%;width:6px;height:6px;background:var(--klein-blue);border-radius:50%;"></div>
+            <div class="dot" style="top:85%;left:45%;width:20px;height:20px;background:var(--klein-blue-pale);opacity:0.3;border-radius:50%;"></div>
+            <div class="dot" style="top:10%;right:30%;width:4px;height:4px;background:var(--klein-blue-mid);border-radius:50%;"></div>
+        </div>
+
+        <h2>Let's create<br>something <span>together</span>.</h2>
+        <p>Have a project in mind or just want to say hello?</p>
+        <a href="mailto:jinghao.ren2021@icloud.com" class="contact-email">jinghao.ren2021@icloud.com</a>
+
+        <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Dribbble</a>
+        </div>
+
+        <div class="footer">© 2024 Judith Ren. All rights reserved.</div>
+    </section>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        let dotX = 0, dotY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.15;
+            cursorY += (mouseY - cursorY) * 0.15;
+            dotX += (mouseX - dotX) * 0.5;
+            dotY += (mouseY - dotY) * 0.5;
+
+            cursor.style.left = cursorX - cursor.offsetWidth / 2 + 'px';
+            cursor.style.top = cursorY - cursor.offsetHeight / 2 + 'px';
+            cursorDot.style.left = dotX - cursorDot.offsetWidth / 2 + 'px';
+            cursorDot.style.top = dotY - cursorDot.offsetHeight / 2 + 'px';
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Hover effects for cursor
+        const hoverElements = document.querySelectorAll('a, .book, button');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Hero Title with blue accent letters and mouse effect
+        const heroTitle = document.getElementById('heroTitle');
+        const text = 'Judith Ren';
+        const blueIndices = [0, 3, 7, 10];
+        const italicIndices = [3, 10];
+
+        heroTitle.innerHTML = '';
+
+        text.split('').forEach((char, i) => {
+            const span = document.createElement('span');
+            span.className = 'char';
+            if (blueIndices.includes(i)) {
+                if (italicIndices.includes(i)) {
+                    span.classList.add('blue-italic');
+                } else {
+                    span.classList.add('blue');
+                }
+            }
+            span.textContent = char === ' ' ? ' ' : char;
+            span.style.display = 'inline-block';
+            heroTitle.appendChild(span);
+        });
+
+        const chars = document.querySelectorAll('.hero-title .char');
+
+        document.addEventListener('mousemove', (e) => {
+            const rect = heroTitle.getBoundingClientRect();
+
+            chars.forEach((char, i) => {
+                const charRect = char.getBoundingClientRect();
+                const charCenterX = charRect.left + charRect.width / 2;
+                const charCenterY = charRect.top + charRect.height / 2;
+
+                const distX = e.clientX - charCenterX;
+                const distY = e.clientY - charCenterY;
+                const distance = Math.sqrt(distX * distX + distY * distY);
+                const maxDist = 300;
+
+                if (distance < maxDist) {
+                    const force = (1 - distance / maxDist) * 15;
+                    const angle = Math.atan2(distY, distX);
+                    const moveX = Math.cos(angle) * force * -1;
+                    const moveY = Math.sin(angle) * force * -1;
+                    const rotate = (moveX * 0.5);
+
+                    char.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${rotate}deg)`;
+                } else {
+                    char.style.transform = 'translate(0, 0) rotate(0deg)';
+                }
+            });
+        });
+
+        // Background text parallax
+        const bgText = document.querySelector('.hero-bg-text');
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.02;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.02;
+            bgText.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+        });
+
+        // Floating dots follow mouse slightly
+        const dots = document.querySelectorAll('.dots-layer .dot');
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.005;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.005;
+            dots.forEach((dot, i) => {
+                const factor = (i % 3 + 1) * 0.3;
+                dot.style.setProperty('--parallax-x', `${moveX * factor}px`);
+                dot.style.setProperty('--parallax-y', `${moveY * factor}px`);
+            });
+        });
+
+        // Active Navigation on Scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '-100px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Book hover visual feedback
+        const books = document.querySelectorAll('.book');
+        books.forEach(book => {
+            book.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateZ(20px)';
+            });
+            book.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateZ(0)';
+            });
+        });
+
+        // Scroll reveal animation for books
+        const bookObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.2 });
+
+        books.forEach((book, i) => {
+            book.style.opacity = '0';
+            book.style.transform = 'translateY(50px)';
+            book.style.transition = `all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) ${i * 0.15}s`;
+            bookObserver.observe(book);
+        });
+
+        // ==================== TECHNIQUES SECTION ====================
+        // Scroll reveal for technique cards
+        const techCards = document.querySelectorAll('.tech-card');
+        const techObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        techCards.forEach(card => techObserver.observe(card));
+
+        // 3D Tilt effect for tilt cards
+        const tiltCards = document.querySelectorAll('.tilt-card');
+
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+            });
+        });
+
+        // Pause rotating showcase on hover
+        const showcaseRing = document.querySelector('.showcase-ring');
+        if (showcaseRing) {
+            showcaseRing.addEventListener('mouseenter', () => {
+                showcaseRing.style.animationPlayState = 'paused';
+            });
+            showcaseRing.addEventListener('mouseleave', () => {
+                showcaseRing.style.animationPlayState = 'running';
+            });
+        }
+
+        // Update nav numbers for techniques section
+        const techNavLink = document.querySelector('a[href="#techniques"]');
+        if (techNavLink) {
+            techNavLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('#techniques').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        }
+    </script>
+
+    <!-- Project Detail Modal -->
+    <div id="projectModal" class="project-modal">
+        <div class="modal-backdrop" onclick="closeProjectDetail()"></div>
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProjectDetail()">
+                <span></span><span></span>
+            </button>
+            <div class="modal-body" id="modalBody">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .project-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-modal.active {
+            display: flex;
+        }
+
+        .modal-backdrop {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 20px 60px rgba(0, 47, 167, 0.1);
+            overflow-y: auto;
+            z-index: 1001;
+            animation: modalSlideUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes modalSlideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: 1px solid rgba(0, 47, 167, 0.2);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--klein-blue);
+            border-color: var(--klein-blue);
+        }
+
+        .modal-close span {
+            position: absolute;
+            width: 16px;
+            height: 1px;
+            background: var(--text-black);
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover span {
+            background: white;
+        }
+
+        .modal-close span:first-child {
+            transform: rotate(45deg);
+        }
+
+        .modal-close span:last-child {
+            transform: rotate(-45deg);
+        }
+
+        .modal-body {
+            padding: 60px;
+        }
+
+        .modal-header {
+            margin-bottom: 40px;
+        }
+
+        .modal-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 4vw, 48px);
+            color: var(--text-black);
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .modal-header .modal-meta {
+            font-size: 12px;
+            color: var(--mid-gray);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .modal-header .modal-meta span {
+            color: var(--klein-blue);
+        }
+
+        .modal-image {
+            width: 100%;
+            margin-bottom: 40px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .modal-description {
+            font-size: 15px;
+            line-height: 2;
+            color: var(--dark-gray);
+            margin-bottom: 30px;
+        }
+
+        .modal-description p {
+            margin-bottom: 20px;
+        }
+
+        .modal-tags {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .modal-tag {
+            padding: 8px 20px;
+            border: 1px solid rgba(0, 47, 167, 0.2);
+            border-radius: 20px;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--klein-blue);
+        }
+
+        .modal-gallery {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .modal-gallery img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-body {
+                padding: 30px;
+            }
+            .modal-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script>
+        const projectData = {
+            'uwc-value-bag': {
+                title: 'UWC Value Bag Design',
+                meta: '2024 <span>·</span> Textile Design <span>·</span> Wax Dyeing',
+                mainImage: 'BagDesignF.png',
+                description: `
+                    <p>This project is based on the UWC value of <strong>Mutual Responsibility & Respect</strong>. The design integrates ripples into the shape of a yin-yang symbol, indicating that each one of us is like a water droplet falling into the sea. The ripples (influence) we cause will affect each other mutually.</p>
+                    <p>Simultaneously, the yin-yang represents balance and boundary within collaboration. Through this textile piece, I explored how visual symbolism can embody core values of community and interdependence.</p>
+                    <p>The process involved sketching the ripple pattern, creating wax-resist designs on fabric, and carefully dyeing with multiple color layers. I documented the entire process from initial concept sketches through wax application, dyeing stages, and final sewing assembly.</p>
+                    <p>Even though I ran into some problems with the design and sewing, I learned how to use a sewing machine and wax dyeing techniques, and I'm really happy with how my project turned out.</p>
+                `,
+                tags: ['Textile Design', 'Wax Dyeing', 'UWC Values', 'Sustainability'],
+                gallery: [
+                    'BagDesignb.png',
+                    'BagDesignF.png',
+                    'BagDesignproc.jpg',
+                    'BagDesignproc2.jpg'
+                ]
+            },
+            'light-up-sdg': {
+                title: 'Light Up SDG',
+                meta: '2024 <span>·</span> Product Design <span>·</span> Interactive Lighting',
+                mainImage: 'LightUpSDGB.png',
+                description: `
+                    <p>This project addresses <strong>UNSDG 14 — Life Below Water</strong>. The ocean covers 71% of Earth's surface and hosts 78% of all fauna in terms of biomass, yet it remains largely invisible to most people. This lamp makes the unseen beauty of marine ecosystems visible and tangible.</p>
+                    <p>The design focuses on overlooked marine microorganisms — coral, krill, seaweed, and plankton — rather than the more commonly depicted fish. Their porous structures are ideal for creating lighting effects. The product consists of a laser-cut hardwood base, 3D-printed coral structures, and blue transparent acrylic pieces that guide and diffuse light.</p>
+                    <p>A detachable blue plastic panel allows users to "help" the ocean through interaction. When placed, the lamp transitions from a dim, fading state to a vibrant, healthy ocean scene — symbolizing hope and the positive consequences of environmental conservation.</p>
+                    <p>The design went through extensive ideation: from a pollution-focused paper ship concept to a drift bottle microcosm, then a fish-and-net design. Each iteration was evaluated against criteria of visual appeal, structural durability, and thematic representation. The final layered ocean structure was chosen for its ability to practice 3D printing while highlighting underestimated marine life.</p>
+                `,
+                tags: ['Product Design', 'SDG 14', 'Interactive Lighting', 'Acrylic', '3D Printing', 'Sustainability'],
+                gallery: [
+                    'LightUpSDGF.png',
+                    'LightUpSDGDesign.jpg',
+                    'LightUpSDGF.png'
+                ]
+            },
+            'endanzoo': {
+                title: 'Endanzoo',
+                meta: '2024 <span>·</span> Mechanical Sculpture <span>·</span> Interactive Design',
+                mainImage: 'Endanzoo.png',
+                description: `
+                    <p><strong>Endanzoo</strong> is a mechanical interactive sculpture designed to raise awareness about the critically endangered Amur leopard. The project transforms complex environmental issues into an engaging, tactile experience for children.</p>
+                    <p>The sculpture depicts the Amur leopard in its snowy forest habitat in Russia's Far East. A hand-cranked mechanism drives multiple cams with different contours, converting rotational motion into up-and-down reciprocating movement. This brings the wooden leopard sculpture to life — raising its head, taking steps, and swinging its arm through cam-driven linkages.</p>
+                    <p>The backdrop uses layered cardstock on a wooden board to create depth, showcasing the leopard's habitat. Trees can fall to reveal humanity's destruction of nature. The ecosystem includes wild boars and small animals as prey, allowing visitors to understand the relationship between the Amur leopard and its local environment through interaction with a magnetic maze toy.</p>
+                    <p>The mood board centered on the leopard's distinctive spotted pattern, blending images with its snowy habitat alongside threats like poaching and habitat loss. Bloodstained and hunter silhouettes highlight human-led dangers (adapted for child-friendly presentation), while plush toy leopards create contrast between the animal's innocent nature and the harsh reality of its dwindling numbers.</p>
+                    <p>Through this project, I learned how context can solve visual complexity — pairing the leopard's overwhelming spotted pattern with its blue, white, and grey snowy habitat created clear contrast. I also developed skills in anatomical sketching, isometric illustration, and mechanical design using cams and followers.</p>
+                `,
+                tags: ['Mechanical Sculpture', 'Wildlife Conservation', 'Cam Mechanism', 'Woodworking', 'Interactive Design'],
+                gallery: [
+                    'Endanzoo.png'
+                ]
+            },
+            'community-space': {
+                title: 'Community Space Design',
+                meta: '2025 <span>·</span> Architecture <span>·</span> Spatial Design',
+                mainImage: 'CMDF.png',
+                description: `
+                    <p>This project reimagines a natural lakeside area into an <strong>outdoor community space</strong> welcoming to all age groups — children, teenagers, adults, and the elderly. Drawing on <strong>Biophilic Design</strong> principles from Oliver Heath's guide, the design fosters belonging, voice, meeting needs, and shared experiences across generations.</p>
+                    <p>The site features existing natural elements: lake water, reeds, trees, and flat ground. Through user interviews with children, teenagers, adults, and elderly community members, distinct needs were identified — from sandpits and slides for kids, to quiet green spaces for teens, outdoor gym equipment and BBQ areas for adults, and backrest seats with lake views for seniors.</p>
+                    <p>Seven design strategies guide the spatial layout: <strong>diversity of spaces, zoning, soft boundaries, collision spaces, growing spaces, sensory spaces, and triangulation</strong>. A circular main path serves as a collision point where people naturally encounter each other. Overlapping zones allow a child playing near water, a teenager on a platform, an adult reading on a bench, and an elderly person walking to coexist in the same space.</p>
+                    <p>Key features include a treehouse with layered platforms, a spiral slide, sunshade umbrellas, rope swings, and a lakeside deck. The overall form mimics a ship — combining rectangular and semi-circular shapes to create harmony with the lake. The lowest level is covered with lawn, allowing people to enjoy nature without direct sunlight exposure.</p>
+                    <p>Materials prioritize natural and local resources — wood, stone, gravel, and recycled materials. Native plants require minimal maintenance. Solar-powered lighting reduces energy consumption. Safety measures include gentle water slopes under 30cm, slip-resistant paths, rounded corners on play equipment, and handrails near slopes.</p>
+                    <p>A detailed floor plan was drawn to scale based on real measurements of the site, showing the spatial layout, circulation paths, and zone divisions. The 1:50 scale model was crafted using wood boards, sticks, transparent plastic sheets, fabric, PLA filament for 3D-printed furniture, foam trees, grass powder, and water effect gel. Techniques included scroll saw cutting, belt sanding, 3D modeling in Blender, laser cutting, and hot glue assembly.</p>
+                `,
+                tags: ['Architecture', 'Biophilic Design', 'Community Space', 'Spatial Design', 'Sustainability', 'Model Making'],
+                gallery: [
+                    'CMDB.png',
+                    'CMDF.png',
+                    'CMDB_floorplan.png'
+                ]
+            },
+            'workshop-layout': {
+                title: 'Workshop Layout',
+                meta: '2025 <span>·</span> Technical Drawing <span>·</span> Measured Survey',
+                mainImage: 'DTworkshop.jpg',
+                description: `
+                    <p>This project involved creating a <strong>precise floor plan</strong> of our school's workshop, drawn entirely to scale from real on-site measurements. Every dimension was carefully recorded using measuring tapes and documented in a field sketchbook before being translated into a clean, accurate technical drawing.</p>
+                    <p>The layout captures the complete spatial organization of the workshop — from heavy machinery placement and workbench arrangements to storage zones, circulation paths, and safety clearances. The drawing follows standard architectural conventions with proper line weights, dimension annotations, and a clear north indicator.</p>
+                    <p>Through this exercise, I developed essential skills in measured building surveys, scale calculation, and technical drafting. Understanding the real-world spatial constraints of a working workshop helped me appreciate how thoughtful layout design directly impacts workflow efficiency and safety in maker spaces.</p>
+                    <p>The final deliverable includes both the detailed floor plan drawing and a photo documentation of the actual workshop space, allowing viewers to compare the measured drawing against the real environment.</p>
+                `,
+                tags: ['Technical Drawing', 'Measured Survey', 'Workshop Design', 'Spatial Planning'],
+                gallery: [
+                    'DTworkshop.jpg',
+                    'WorkshopLayout.pdf'
+                ]
+            }
+        };
+
+        function openProjectDetail(projectId) {
+            const modal = document.getElementById('projectModal');
+            const body = document.getElementById('modalBody');
+            const project = projectData[projectId];
+
+            if (!project) return;
+
+            let galleryHtml = '';
+            if (project.gallery && project.gallery.length > 0) {
+                galleryHtml = '<div class="modal-gallery">' + 
+                    project.gallery.map(img => `<img src="${img}" alt="${project.title}">`).join('') + 
+                    '</div>';
+            }
+
+            let mainImageHtml = '';
+            if (project.mainImage) {
+                mainImageHtml = `<div class="modal-image"><img src="${project.mainImage}" alt="${project.title}"></div>`;
+            }
+
+            body.innerHTML = `
+                <div class="modal-header">
+                    <h2>${project.title}</h2>
+                    <div class="modal-meta">${project.meta}</div>
+                </div>
+                ${mainImageHtml}
+                <div class="modal-description">${project.description}</div>
+                <div class="modal-tags">
+                    ${project.tags.map(tag => `<span class="modal-tag">${tag}</span>`).join('')}
+                </div>
+                ${galleryHtml}
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectDetail() {
+            const modal = document.getElementById('projectModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeProjectDetail();
+            }
+        });
+    </script>
+</body>
+</html>
